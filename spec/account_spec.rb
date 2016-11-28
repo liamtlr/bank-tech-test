@@ -16,7 +16,6 @@ describe Account do
 
   describe '#make_transaction' do
     before do
-      allow(subject).to receive(:format_time) {"05-01-2017"}
       subject.make_transaction(5)
     end
     it 'applies a credit to the balance when passed a positive integer' do
@@ -27,10 +26,15 @@ describe Account do
       subject.make_transaction(-5)
       expect(subject.balance).to eq 0
     end
+  end
+
+  describe '#add_transaction_to_log' do
     it 'pushes the transaction and a timestamp to the transactions log hash' do
-      subject.make_transaction(5)
+      allow(subject).to receive(:format_time) {"05-01-2017"}
+      subject.add_transaction_to_log(5)
       expect(subject.transactions_log).to include({'05-01-2017'=>5})
     end
   end
+
 
 end

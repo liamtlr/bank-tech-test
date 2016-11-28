@@ -10,11 +10,19 @@ class Account
 
   def make_transaction(amount)
     @balance += amount
-    @transactions_log[format_time] = amount
+    add_transaction_to_log(amount)
   end
 
-  def format_time
-    Time.new.strftime("%d-%b-%Y")
+  def add_transaction_to_log(amount, time=Time.now)
+    if time.class == Time
+      time = format_time(time)
+    end
+    @transactions_log[time] = amount
   end
+
+  def format_time(time)
+    time.strftime("%d-%b-%Y")
+  end
+
 
 end
