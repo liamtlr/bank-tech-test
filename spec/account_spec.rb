@@ -34,6 +34,10 @@ describe Account do
       subject.add_transaction_to_log(5)
       expect(subject.transactions_log).to include({'05-01-2017'=>5})
     end
+    it 'allows a date to be specified if the transaction is not made now' do
+      subject.add_transaction_to_log(5, '01-01-1911')
+      expect(subject.transactions_log).to include({'01-01-1911'=>5})
+    end
   end
 
 
