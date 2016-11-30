@@ -27,10 +27,7 @@ class Account
   def request_statement(start_date = @start_date, end_date = Time.new)
     start_date = check_date_time_format(start_date)
     end_date = check_date_time_format(end_date)
-    statement_hash = @transactions_log.select do | key, value|
-      key >= start_date && key <= end_date
-    end
-    calculate_starting_balance(statement_hash, start_date)
+    create_statement_hash(start_date, end_date)
   end
 
   def request_balance
@@ -46,7 +43,7 @@ class Account
   end
 
   def valid_transaction?(amount)
-    (amount + @balance) > (0 + OVERDRAFT_LIMIT)
+    (amount + @balance) >= (0 + OVERDRAFT_LIMIT)
   end
 
   def add_transaction_to_log(amount, date)
@@ -64,11 +61,18 @@ class Account
     end
   end
 
+  def create_statement_hash(start_date,end_date)
+    statement_hash = @transactions_log.select do | key, value|
+      key >= start_date && key <= end_date
+    end
+    calculate_starting_balance(statement_hash, start_date)
+  end
+
   def calculate_starting_balance(statement_hash, start_date)
     previous_statements_hash = @transactions_log.select do | key, value|
       key < start_date
     end
-    interim_balance = previous_statements_hash.values.inject
+    interim_balance = previous_statements_hash.values.inject(:+)
     unless interim_balance.nil?
       starting_balance = interim_balance + @starting_balance
     else

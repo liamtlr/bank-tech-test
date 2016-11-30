@@ -14,6 +14,15 @@ git clone https://github.com/wirsindpapst/bank-tech-test.git
 irb -r ./lib/account.rb
 ```
 
+* If you're interested in tests ....
+
+```
+
+gem install bundler
+bundle
+rspec
+```
+
 ## Using the programme
 
 1) Create account

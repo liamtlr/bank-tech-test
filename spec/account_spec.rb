@@ -1,5 +1,4 @@
 require 'account'
-require 'timecop'
 
 describe Account do
 
@@ -31,7 +30,7 @@ describe Account do
       expect(subject.balance).to eq 0
     end
     it 'specifies a date when passed one' do
-      time = Timecop.freeze(Time.now)
+      time = Time.now
       allow(subject).to receive(:check_date_time_format).with(time)
       subject.make_transaction(-5, time)
       expect(subject.transactions_log).to include({time=>-5})
@@ -63,15 +62,15 @@ describe Account do
   #   end
   # end
 
-
-  describe '#request' do
-    it 'provides a new hash based on the dates provided' do
-      account = Account.new(400, "14/02/2015")
-      account.make_transaction(-300, '15/02/2015')
-      account.make_transaction(-300, '17/02/2015')
-      expect(account.request_statement('16-02-2016')).length.to eq(1)
-    end
-  end
-
+  # describe '#request' do
+  #   it 'provides a new hash based on the dates provided' do
+  #     account = Account.new(400, "14/02/2015")
+  #     account.make_transaction(-300, '15/02/2015')
+  # #     account.make_transaction(-50, '17/02/2015')
+  # #     statement =  account.request_statement('16-02-2016', '18-02-2016')
+  # #     puts statement
+  # #     expect(Account).to receive(:create_statement_hash)
+  # #   end
+  # end
 
 end
