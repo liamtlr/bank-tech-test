@@ -40,5 +40,4 @@ class Statement
         index += 1
     end
   end
-
 end
